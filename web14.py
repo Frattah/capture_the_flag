@@ -11,3 +11,6 @@ for i in arr:
     if flag != '':
         break
 print(flag)
+
+# We send a GET http request and we scan to search the flag into comments
+# This time we are using a special filtering and the Comment module

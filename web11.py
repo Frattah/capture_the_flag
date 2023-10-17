@@ -14,3 +14,6 @@ for i in range (0,4):
         flag += j.loads(r.text)['flag_piece']
 print(flag)
         
+# We have to do a Cross Site Request Forgery, so we must obtain the csrf token and a session cookie
+# First of all we send a POST request to the 'login' resource, then we do a GET request using session
+# cookie and csrf token. We do this 4 times to collect all flag pieces.
