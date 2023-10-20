@@ -11,23 +11,34 @@ def find_list_resources (tag, attribute,soup):
 def find_flag (link, seen): 
 
     # Find flag if it is here
-    html_doc = requests.get(link).text
-    soup = BeautifulSoup(html_doc, 'html.parser')
+    resp = requests.get(link).text
+    soup = BeautifulSoup(resp, 'html.parser')
     flag = soup.find_all('h1')[0].get_text()
     if flag.find('flag{') != -1:
         return flag[flag.find('flag{') : flag.find('}') + 1]
     else:
-        # List all this page's link
+
+        # List all link of this page
         scan = find_list_resources("a","href",soup)
-        # Append this url to 'seen' list
+
+        # Append this resource to 'seen' list
         parameter = '/' + link[len(link) - link[::-1].find('/'):]
         seen.append(parameter)
-        # Eliminate parameter from url
+
+        # Eliminate resource's reference from url
         link = link[0 : len(link) - link[::-1].find('/') - 1]
         flag = ""
+
+        # Iterate on all scanned resource
         for i in scan:
+
+            # But recurr only on 'not seen'
             if i not in seen:
+
+                # Recurr on this resource
                 flag = find_flag(link + i, seen)
+
+                # You have find the flag, hence stop the iteration
                 if flag != "":
                     break
         return flag

