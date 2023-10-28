@@ -10,6 +10,8 @@ def find_list_resources (tag, attribute,soup):
 url = 'http://web-15.challs.olicyber.it/'
 resp = requests.get(url).text
 soup = BeautifulSoup(resp, 'html.parser')
+
+# Find all external resources
 external = []
 external.append(find_list_resources("img","src",soup))   
 external.append(find_list_resources("script","src",soup))
@@ -20,6 +22,8 @@ external.append(find_list_resources("iframe","src",soup))
 external.append(find_list_resources("embed","src",soup))
 external.append(find_list_resources("object","data",soup))         
 external.append(find_list_resources("source","src",soup))
+
+# Delete void entries
 external = [i for i in external if i != []]
 resp = ''
 for i in external:

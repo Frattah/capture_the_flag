@@ -1,5 +1,4 @@
 import requests
-from urllib.parse import quote
 
 url = 'http://ssrf2.challs.cyberchallenge.it/'
 params = {
